@@ -3,11 +3,42 @@
 <head>
 	<title>Quake</title>
 	<link rel="stylesheet" type="text/css" href="style.css">
-	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script type="text/javascript" src="script.js"></script>
-	
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.3.0/handlebars.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var template = $('#entry-template').html();
+			var renderer = Handlebars.compile(template);
+			var quake = "http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson";
+			$.getJSON(quake, function( json ) {
+				console.log( "Count " + json.metadata.count );
+				var result = renderer (json);
+				$('#container').html(result);
+			});		
+		});
+	</script>
 </head>
 <body>
+	<script id="entry-template" type="text/x-handlebars-template">
+		<div class="entry">
+			<center>
+				<h1>Number of Earthquakes in last 24 Hours: {{metadata.count}}</h1>
+				<div class="body">
 
+					{{#each features}}
+					{{properties.place}}
+					<br>
+					Magnitude: 
+					{{properties.mag}}
+					<br><br>
+					{{/each}}
+				</div>
+			</center>
+		</div>
+	</script>
+	<div id="container"></div>
 </body>
 </html>
