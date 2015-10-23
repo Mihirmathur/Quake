@@ -8,8 +8,10 @@
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.3.0/handlebars.min.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
 	<script type="text/javascript">
 		$(document).ready(function(){
+			setTimeout("ReloadPage()", 10000);
 			var template = $('#entry-template').html();
 			var renderer = Handlebars.compile(template);
 			var quake = "http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson";
@@ -25,15 +27,25 @@
 	<script id="entry-template" type="text/x-handlebars-template">
 		<div class="entry">
 			<center>
-				<h1>Number of Earthquakes in last 24 Hours: {{metadata.count}}</h1>
+			<div id = "earthquakes">
+				<h1 id = "heading">Total Earthquakes Today: {{metadata.count}}</h1>
+			</div>
 				<div class="body">
-
 					{{#each features}}
+					
+					<div class="place">
 					{{properties.place}}
-					<br>
+					</div>
+					<div class="magnitude">
 					Magnitude: 
+					<span class ="mag">
 					{{properties.mag}}
+					</span>
+					<br>
+					<a href = {{properties.url}} + "#general_map" class="btn btn-primary btn-xs">See Location</a>
+					</div>
 					<br><br>
+					
 					{{/each}}
 				</div>
 			</center>
@@ -42,3 +54,4 @@
 	<div id="container"></div>
 </body>
 </html>
+
